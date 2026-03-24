@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('checkins', function (Blueprint $table) {
-            $table->id();
+        Schema::create('checkins', function (Blueprint $table): void {
+            $table->uuid('id')->primary();
+            $table->uuid('user_id');
+            $table->uuid('credential_id');
+            $table->uuid('gym_id');
+            $table->timestamp('occurred_at');
             $table->timestamps();
+
+            $table->index(['user_id', 'occurred_at']);
+            $table->index(['gym_id', 'occurred_at']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('checkins');
