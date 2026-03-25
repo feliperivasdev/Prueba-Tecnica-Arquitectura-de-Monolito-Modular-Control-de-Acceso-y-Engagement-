@@ -22,7 +22,7 @@ final class RegisterCheckInHandler
     ) {
     }
 
-    public function __invoke(RegisterCheckInCommand $command): void
+    public function __invoke(RegisterCheckIn $command): void
     {
         $this->transactionManager->run(function () use ($command): void {
             $checkIn = CheckIn::register(
