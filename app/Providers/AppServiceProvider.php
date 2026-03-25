@@ -16,9 +16,11 @@ use Src\AccessControl\Infrastructure\Persistence\PdoOutboxRepository;
 use Src\Engagement\Domain\Port\QuoteProvider;
 use Src\Engagement\Domain\Repository\DailyQuoteRepository;
 use Src\Engagement\Domain\Repository\DashboardProjectionRepository;
-use Src\Engagement\Infrastructure\External\FakeQuoteProvider;
+use Src\Engagement\Infrastructure\External\DummyJsonQuoteProvider;
 use Src\Engagement\Infrastructure\Persistence\PdoDailyQuoteRepository;
 use Src\Engagement\Infrastructure\Persistence\PdoDashboardProjectionRepository;
+use Src\Engagement\Application\ReadModel\DashboardCheckInViewRepository;
+use Src\Engagement\Infrastructure\Persistence\PdoDashboardCheckInViewRepository;
 
 // Importaciones de Shared
 use Src\Shared\Application\Messaging\EventBus;
@@ -45,9 +47,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(OutboxMessageRepository::class, PdoOutboxMessageRepository::class);
         
         // Engagement
-        $this->app->bind(QuoteProvider::class, FakeQuoteProvider::class);
+        $this->app->bind(QuoteProvider::class, DummyJsonQuoteProvider::class);
         $this->app->bind(DailyQuoteRepository::class, PdoDailyQuoteRepository::class);
         $this->app->bind(DashboardProjectionRepository::class, PdoDashboardProjectionRepository::class);
+        $this->app->bind(DashboardCheckInViewRepository::class, PdoDashboardCheckInViewRepository::class);
         
         // Shared
         $this->app->bind(Clock::class, SystemClock::class);
