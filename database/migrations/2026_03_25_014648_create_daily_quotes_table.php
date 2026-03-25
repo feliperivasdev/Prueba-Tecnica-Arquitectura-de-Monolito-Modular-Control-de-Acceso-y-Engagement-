@@ -8,21 +8,21 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('checkins', function (Blueprint $table): void {
+        Schema::create('daily_quotes', function (Blueprint $table): void {
             $table->uuid('id')->primary();
+            $table->uuid('check_in_id')->unique();
             $table->uuid('user_id');
-            $table->uuid('credential_id');
-            $table->uuid('gym_id');
-            $table->timestamp('occurred_at');
+            $table->text('quote_text');
+            $table->string('quote_author');
+            $table->timestamp('assigned_at');
             $table->timestamps();
 
-            $table->index(['user_id', 'occurred_at']);
-            $table->index(['gym_id', 'occurred_at']);
+            $table->index(['user_id', 'assigned_at']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('checkins');
+        Schema::dropIfExists('daily_quotes');
     }
 };

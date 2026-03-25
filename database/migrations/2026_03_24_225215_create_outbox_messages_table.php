@@ -8,21 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('checkins', function (Blueprint $table): void {
+        Schema::create('outbox_messages', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->uuid('credential_id');
-            $table->uuid('gym_id');
+            $table->string('event_name');
+            $table->json('payload');
             $table->timestamp('occurred_at');
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
 
-            $table->index(['user_id', 'occurred_at']);
-            $table->index(['gym_id', 'occurred_at']);
+            $table->index(['published_at', 'created_at']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('checkins');
+        Schema::dropIfExists('outbox_messages');
     }
 };
