@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'dummyjson' => [
+        'quote_url' => env(
+            'DUMMYJSON_QUOTE_URL',
+            'https://dummyjson.com/quotes/random'
+        ),
+    ],
+
 ];

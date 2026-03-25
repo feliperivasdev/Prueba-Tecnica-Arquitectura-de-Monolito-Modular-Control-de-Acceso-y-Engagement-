@@ -13,13 +13,12 @@ use Throwable;
 
 final class DummyJsonQuoteProvider implements QuoteProvider
 {
-    private const URL = 'https://dummyjson.com/quotes/random';
-    //private const URL = 'http://api.real.nofake1link.com/quotes/random';
-
     public function fetchRandom(): MotivationalQuote
     {
+        $url = (string) config('services.dummyjson.quote_url');
+
         try {
-            $response = Http::timeout(2)->get(self::URL);
+            $response = Http::timeout(2)->get($url);
         } catch (Throwable) {
             throw new QuoteProviderUnavailable('Quote API not reachable');
         }

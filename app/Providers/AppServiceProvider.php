@@ -27,43 +27,31 @@ use Src\Shared\Application\Messaging\EventBus;
 use Src\Shared\Domain\Clock;
 use Src\Shared\Domain\TransactionManager;
 use Src\Shared\Domain\UuidGenerator;
-use Src\Shared\Infrastructure\Messaging\LogEventBus;
+use Src\Shared\Infrastructure\Messaging\RabbitMqEventBus;
 use Src\Shared\Infrastructure\Persistence\LaravelTransactionManager;
 use Src\Shared\Infrastructure\System\LaravelUuidGenerator;
 use Src\Shared\Infrastructure\System\SystemClock;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        // Registro de los Binds para la Inyección de Dependencias
-        
-        // AccessControl
         $this->app->bind(CheckInRepository::class, PdoCheckInRepository::class);
         $this->app->bind(OutboxRepository::class, PdoOutboxRepository::class);
         $this->app->bind(OutboxMessageRepository::class, PdoOutboxMessageRepository::class);
-        
-        // Engagement
+
         $this->app->bind(QuoteProvider::class, DummyJsonQuoteProvider::class);
         $this->app->bind(DailyQuoteRepository::class, PdoDailyQuoteRepository::class);
         $this->app->bind(DashboardProjectionRepository::class, PdoDashboardProjectionRepository::class);
         $this->app->bind(DashboardCheckInViewRepository::class, PdoDashboardCheckInViewRepository::class);
-        
-        // Shared
+
         $this->app->bind(Clock::class, SystemClock::class);
         $this->app->bind(UuidGenerator::class, LaravelUuidGenerator::class);
         $this->app->bind(TransactionManager::class, LaravelTransactionManager::class);
-        $this->app->bind(EventBus::class, LogEventBus::class);
+        $this->app->bind(EventBus::class, RabbitMqEventBus::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
     }
 }
