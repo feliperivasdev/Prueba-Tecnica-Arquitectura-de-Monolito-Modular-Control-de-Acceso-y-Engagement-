@@ -94,6 +94,10 @@ docker compose exec app php artisan engagement:consume-checkins
 
 > En sistemas con el plugin antiguo: sustituye `docker compose` por `docker-compose`.
 
+**Primera vez / equipo lento:** MySQL y RabbitMQ pueden tardar más en pasar el *healthcheck*. Si `app` no arranca, espera ~1 minuto y ejecuta de nuevo `docker compose up -d` (o `docker-compose up -d`). Revisa con `docker compose ps`.
+
+**Puertos ocupados (otra máquina):** Docker Compose lee un archivo `.env` en la **raíz del repo** para sustituir variables. Puedes añadir al final de tu `.env` (el mismo que usa Laravel) las claves de [`.env.docker-ports.example`](.env.docker-ports.example), por ejemplo `HTTP_PORT=8081`, y volver a levantar los servicios. La app **dentro** de Docker sigue usando `mysql:3306` y `rabbitmq:5672`; solo cambian los puertos expuestos al **host**.
+
 ### Opción 2 — Aplicación en el host + RabbitMQ en contenedor
 
 Adecuado para desarrollo diario (p. ej. `php artisan serve` y SQLite).
@@ -195,6 +199,8 @@ php artisan test tests/Unit/Engagement/Infrastructure/External/DummyJsonQuotePro
 | Dashboard sin frases nuevas | Consumidor en ejecución; colas en RabbitMQ; logs de `engagement:consume-checkins` |
 
 ---
+
+
 
 ## Licencia
 
